@@ -1,6 +1,6 @@
 'use strict'
 
-import { getContatos,getContatosPorNome } from "./script.js"
+import { getContatos,getContatosPorNome, postContato } from "./script.js"
 
 function criarCard (contato) {
     const container = document.getElementById('container')
@@ -29,6 +29,44 @@ async function carregarPesquisa (evento){
     }
 }
 
+function cancelar (){
+    document.querySelector('main').className = 'card-show'
+}
+
+function novoContato (){
+    document.querySelector('main').className = 'form-show'
+}
+
+function salvarContato (){
+
+    const form = document.querySelector('form')
+    console.log(form.reportValidity)
+
+    if(form.reportValidity() == false){
+        return
+    }
+
+    const contato = {
+                    "celular": document.getElementById('nome').value,
+                    "foto": document.getElementById('foto').value,
+                    "celular": document.getElementById('celular').value,
+                    "email": document.getElementById('email').value,
+                    "endereco": document.getElementById('endereco').value,
+                    "cidade": document.getElementById('cidade').value
+    }
+    if(postContato(contato)){
+        alert('Criado com sucesso!')
+        carregarCards()
+        cancelar()
+    }
+}
+
 carregarCards()
 
 document.getElementById('nome-contato').addEventListener('keydown', carregarPesquisa)
+
+document.getElementById('novo-contato').addEventListener('click', novoContato)
+
+document.getElementById('cancelar').addEventListener('click', cancelar)
+
+document.getElementById('salvar').addEventListener('click', salvarContato)
